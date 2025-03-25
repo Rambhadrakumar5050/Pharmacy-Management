@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark px-3">
+    <a class="navbar-brand" href="#">Admin Dashboard</a>
+    <button class="btn btn-info" id="viewBalanceBtn">View Balance</button>
+    <span class="text-light fw-bold ms-3" id="balanceText" style="display: none;">Balance: ₹<span id="adminBalance"></span></span>
+    <a class="btn btn-danger" href="/auth/logout">Logout</a>
+</nav>
+
+    
+    
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Medicines</h2>
+            <a href="/admin/add-medicine" class="btn btn-primary">Add Medicine</a>
+        </div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Manufacturer</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Expiry Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each medicines}}
+                <tr>
+                    <td>{{this.medicineName}}</td>
+                    <td>{{this.medicineCategory}}</td>
+                    <td>{{this.medicineManufacturer}}</td>
+                    <td>₹{{this.medicinePrice}}</td>
+                    <td>{{this.medicineStockQuantity}}</td>
+                    <td>{{this.medicineExpiryDate}}</td>
+                    <td>
+                        <form action="/admin/add-medicine-stock" method="POST" style="display:inline;">
+                            <input type="hidden" name="medicineId" value="{{this.medicineId}}">
+                            <input type="number" name="additionalStock" placeholder="Add Stock" min="1" required>
+                            <button type="submit" class="btn btn-success btn-sm">Add Stock</button>
+                        </form>
+                        <form action="/admin/delete-medicine" method="POST" style="display:inline;">
+                            <input type="hidden" name="medicineId" value="{{this.medicineId}}">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                        
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <h2>Orders</h2>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Order ID</th>
+            <th>Medicine Name</th>
+            <th>Quantity</th>
+            <th>Order Date</th>
+            <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+               {{#each orders}}
+    <tr>
+        <td>{{this.orderId}}</td>
+        <td>{{this.medicineName}}</td>
+        <td>{{this.quantity}}</td>
+        <td>{{this.orderDate}}</td>
+        <td>₹{{this.totalPrice}}</td>
+    </tr>
+    {{/each}}
+            </tbody>
+        </table>
+
+        <h2>Purchases</h2>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>Purchase ID</th>
+                <th>User ID</th>
+                <th>Medicine ID</th>
+                <th>Quantity</th>
+                <th>Purchase Date</th>
+                <th>Cost Price</th>
+            </tr>
+            </thead>
+            <tbody>
+                {{#each purchases}}
+                <tr>
+                    <td>{{this.purchaseId}}</td>
+                    <td>{{this.userId}}</td>
+                    <td>{{this.medicineId}}</td> <!-- Corrected -->
+                    <td>{{this.quantity}}</td>
+                    <td>{{this.purchaseDate}}</td> <!-- Moved to correct column -->
+                    <td>₹{{this.costPrice}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    <script>
+document.getElementById("viewBalanceBtn").addEventListener("click", function() {
+    fetch("/admin/get-balance")
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById("adminBalance").innerText = data.balance;
+                document.getElementById("balanceText").style.display = "inline";
+            } else {
+                alert("Failed to fetch balance.");
+            }
+        })
+        .catch(error => console.error("Error fetching balance:", error));
+});
+</script>
+
+</body>
+</html>
