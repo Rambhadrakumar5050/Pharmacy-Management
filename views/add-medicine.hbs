@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Medicine</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Admin Medicine Controller</a>
+        <a class="btn btn-secondary" href="/admin">Back to Dashboard</a>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>Add Medicine</h2>
+        <form action="/admin/add-medicine" method="POST">
+            <div class="form-group">
+                <label>Medicine Name:</label>
+                <input type="text" class="form-control" name="medicineName" required>
+            </div>
+            <div class="form-group">
+                <label>Category:</label>
+                <input type="text" class="form-control" name="medicineCategory" required>
+            </div>
+            <div class="form-group">
+                <label>Manufacturer:</label>
+                <input type="text" class="form-control" name="medicineManufacturer" required>
+            </div>
+            <div class="form-group">
+                <label>Price (₹):</label>
+                <input type="number" class="form-control" name="medicinePrice" required>
+            </div>
+            <div class="form-group">
+                <label>Stock Quantity:</label>
+                <input type="number" class="form-control" name="medicineStockQuantity" required>
+            </div>
+            <div class="form-group">
+                <label>Expiry Date:</label>
+                <input type="date" class="form-control" name="medicineExpiryDate" required>
+            </div>
+            <button type="submit" class="btn btn-success">Save Medicine</button>
+        </form>
+    </div>
+</body>
+</html>
